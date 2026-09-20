@@ -6,6 +6,7 @@ TOPTESTBENCH = TB_$(TOPLEVEL)
 IOTOPLEVEL = chip_top
 IOTOPTESTBENCH = TB_$(IOTOPLEVEL)
 TESTBENCHPATH = $(MAKEFILE_DIR)/src/Testbenches
+MACROPATH = $(MAKEFILE_DIR)/macros
 WORKDIR = $(MAKEFILE_DIR)/work
 GHDL_FLAGS = --workdir=$(WORKDIR)
 GHDL_SIM_FLAGS = --stop-time=10us --ieee-asserts=disable-at-0

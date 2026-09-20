@@ -7,7 +7,7 @@ end TB_Trivium_Chip;
 architecture Behavioral of TB_Trivium_Chip is
 
     component Trivium_Chip is
-        Generic (bits_per_cycle : INTEGER := 256);
+        Generic (bits_per_cycle : INTEGER := 4);
         Port ( clk : in STD_LOGIC;
                rst : in STD_LOGIC;
                seed_reg_en : in STD_LOGIC;
@@ -21,18 +21,18 @@ architecture Behavioral of TB_Trivium_Chip is
     signal state : states := S_RESET;
     
     signal clk, rst, seed_reg_en, triv_rst, triv_en : STD_LOGIC;
-    signal data_in : STD_LOGIC_VECTOR (3 downto 0);
-    signal stream_out : STD_LOGIC_VECTOR (63 downto 0);
+    signal data_in, data_out : STD_LOGIC_VECTOR (3 downto 0);
+    signal keystream : STD_LOGIC_VECTOR (127 downto 0);
     
     constant seed : STD_LOGIC_VECTOR (287 downto 0) := x"d099059daa1b3475fe218a1f1148a1934e9b40faf363b5221028b68e40aa611e2de0726b";
     
     signal notclk : STD_LOGIC;
-    constant clk_period : time := 10 ns;
+    constant clk_period : time := 10ns;
     
 begin
 
     notclk <= NOT clk;
-    UUT: Trivium_Chip Generic map (64) Port Map (notclk, rst, seed_reg_en, triv_rst, triv_en, data_in, stream_out);
+    UUT: Trivium_Chip Generic map (4) Port Map (notclk, rst, seed_reg_en, triv_rst, triv_en, data_in, data_out);
     
     clk_proc: process
     begin
@@ -43,7 +43,7 @@ begin
     end process;
     
     stim_proc: process(clk)
-        variable counter : integer range 0 to 200;
+        variable counter : integer range 0 to 256;
     begin
         if rising_edge(clk) then
             case state is
@@ -53,6 +53,7 @@ begin
                                         triv_rst                    <= '0';
                                         triv_en                     <= '0';
                                         data_in                     <= (others => '0');
+                                        keystream                   <= (others => '0');
                                         counter                     := 0;
                                         state                       <= S_SEED;
 
@@ -72,14 +73,15 @@ begin
 
                 when S_STREAM =>        triv_rst                    <= '0';
                                         triv_en                     <= '1';
+                                        keystream                   <= keystream(123 downto 0) & data_out;
                                         counter                     := counter + 1;
-                                        if (counter = 200) then
+                                        if (counter = 256) then
                                             counter                 := 0;
                                             state                   <= S_CHECK;
                                         end if;
                                         
                 when S_CHECK =>         triv_en                     <= '0';
-                                        if (stream_out = x"f0b8a660df1538f7") then
+                                        if (keystream = x"ae97ee71dd2c9a6fabb172345717161b") then
                                             report "SUCCESS";
                                         else
                                             report "FAILURE";

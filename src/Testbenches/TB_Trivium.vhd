@@ -7,7 +7,7 @@ end TB_Trivium;
 architecture Behavioral of TB_Trivium is
 
     component Trivium is
-        Generic (output_bits : INTEGER := 64);
+        Generic (output_bits : INTEGER := 4);
         Port (  clk : in STD_LOGIC;
                 rst : in STD_LOGIC;
                 en : in STD_LOGIC;
@@ -17,13 +17,14 @@ architecture Behavioral of TB_Trivium is
     
     signal clk, rst, en : STD_LOGIC;
     signal seed : STD_LOGIC_VECTOR (287 downto 0);
-    signal stream_out : STD_LOGIC_VECTOR (63 downto 0);
+    signal stream_out : STD_LOGIC_VECTOR (3 downto 0);
+    signal keystream : STD_LOGIC_VECTOR (127 downto 0);
     
-    constant clk_period : time := 10 ns;
+    constant clk_period : time := 10ns;
     
 begin
 
-    UUT: Trivium Generic map (64) Port Map (clk, rst, en, seed, stream_out);
+    UUT: Trivium Generic map (4) Port Map (clk, rst, en, seed, stream_out);
     
     clk_proc: process
     begin
@@ -45,13 +46,13 @@ begin
         rst     <= '0';
         en      <= '1';
         
-        wait for 200*clk_period;
+        wait for 256*clk_period;
         
         en      <= '0';
         
         wait for clk_period;
         
-        if stream_out = x"f0b8a660df1538f7" then
+        if keystream = x"ae97ee71dd2c9a6fabb172345717161b" then
             report "SUCCESS";
         else
             report "FAILURE";
@@ -60,4 +61,13 @@ begin
         wait;
     end process;
 
+    shift_reg: process(clk)
+    begin
+        if (rising_edge(clk)) then
+            if (en = '1') then
+                keystream  <= keystream(123 downto 0) & stream_out;
+            end if;
+        end if;
+    end process;
+    
 end Behavioral;

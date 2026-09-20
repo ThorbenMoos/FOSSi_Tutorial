@@ -4,9 +4,10 @@ module TB_Trivium_Chip_verilog;
 
 reg clk, rst, seed_reg_en, triv_rst, triv_en;
 reg [3:0] data_in;
+reg [127:0] keystream;
 reg [3:0] state = 3'b000;
 
-wire [63:0] stream_out;
+wire [3:0] data_out;
 wire [287:0] seed;
 wire notclk;
 
@@ -14,7 +15,7 @@ parameter clk_period = 10;
 integer counter;
 
 // Unit Under Test
-Trivium_Chip UUT (notclk, rst, seed_reg_en, triv_rst, triv_en, data_in, stream_out);
+Trivium_Chip #(4) UUT (notclk, rst, seed_reg_en, triv_rst, triv_en, data_in, data_out);
 
 assign notclk = ~clk;
 assign seed = 288'hd099059daa1b3475fe218a1f1148a1934e9b40faf363b5221028b68e40aa611e2de0726b;
@@ -37,6 +38,7 @@ always @(posedge clk) begin
                 triv_rst                    = 1'b0;
                 triv_en                     = 1'b0;
                 data_in                     = 4'b0000;
+                keystream                   = 128'h00000000000000000000000000000000;
                 counter                     = 0;
                 state                       = 3'b001;
             end
@@ -62,8 +64,9 @@ always @(posedge clk) begin
             begin
                 triv_rst                    = 1'b0;
                 triv_en                     = 1'b1;
+                keystream                   = {keystream[123:0], data_out};
                 counter                     = counter + 1;
-                if (counter == 200) begin
+                if (counter == 256) begin
                     counter                 = 0;
                     state                   = 3'b100;
                 end
@@ -71,7 +74,7 @@ always @(posedge clk) begin
         3'b100:
             begin
                 triv_en                     = 1'b0;
-                if (stream_out == 64'hf0b8a660df1538f7) begin
+                if (keystream == 128'hae97ee71dd2c9a6fabb172345717161b) begin
                     $display("SUCCESS");
                 end else begin
                     $display("FAILURE");

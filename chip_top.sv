@@ -177,7 +177,7 @@ module chip_top
     endgenerate
 
     // Core design
-    Cloneless toplevel #(bits_per_cycle)
+    Trivium_Chip toplevel
 	(
        `ifdef USE_POWER_PINS
         .VSS            (VSS),

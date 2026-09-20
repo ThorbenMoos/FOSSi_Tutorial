@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity Trivium_Chip is
-    Generic (bits_per_cycle : INTEGER := 64);
+    Generic (bits_per_cycle : INTEGER := 4);
     Port ( clk : in STD_LOGIC;
            rst : in STD_LOGIC;
            seed_reg_en : in STD_LOGIC;
