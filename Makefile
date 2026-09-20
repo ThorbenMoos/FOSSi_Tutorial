@@ -17,7 +17,7 @@ PRECHECK_ROOT = $(MAKEFILE_DIR)/gf180mcu-precheck
 PRECHECK_TAG = 1.7.3
 ID = G803TRIV
 
-all: clean analyze sim convert sim_converted clone_pdk sim_with_io cell_replacement build_macros erase_macro_rtl build_design sim_postlayout waferspace_precheck
+all: clean analyze sim convert sim_converted clone_pdk sim_with_io annotate_power_pins build_design sim_postlayout waferspace_precheck
 
 clean:
 	rm -rf $(WORKDIR)
