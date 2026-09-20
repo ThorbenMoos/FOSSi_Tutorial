@@ -59,6 +59,7 @@
               # Simulation
               iverilog
               verilator
+			  ghdl
 
               # Waveform viewing
               gtkwave
