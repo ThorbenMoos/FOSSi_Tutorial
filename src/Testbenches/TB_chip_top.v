@@ -1,11 +1,12 @@
 `timescale 1ns / 1ps
 
-module TB_Trivium_Chip_verilog;
+module TB_chip_top;
 
 reg clk, rst, seed_reg_en, triv_rst, triv_en;
 reg [3:0] data_in;
 reg [3:0] state = 3'b000;
 
+wire clk_PAD, rst_PAD, seed_reg_en_PAD, triv_rst_PAD, triv_en_PAD;
 wire [63:0] stream_out;
 wire [287:0] seed;
 wire notclk;
@@ -14,9 +15,15 @@ parameter clk_period = 10;
 integer counter;
 
 // Unit Under Test
-Trivium_Chip UUT (notclk, rst, seed_reg_en, triv_rst, triv_en, data_in, stream_out);
+chip_top UUT (.clk_PAD(clk_PAD), .rst_PAD(rst_PAD), .seed_reg_en_PAD(seed_reg_en_PAD), .triv_rst_PAD(triv_rst_PAD), .triv_en_PAD(triv_en_PAD), .data_in_PAD(data_in_PAD), .data_out_PAD(stream_out));
 
 assign notclk = ~clk;
+assign clk_PAD = notclk;
+assign rst_PAD = rst;
+assign seed_reg_en_PAD = seed_reg_en;
+assign triv_rst_PAD = triv_rst;
+assign triv_en_PAD = triv_en;
+assign data_in_PAD = data_in;
 assign seed = 288'hd099059daa1b3475fe218a1f1148a1934e9b40faf363b5221028b68e40aa611e2de0726b;
 
 // Clock Process
