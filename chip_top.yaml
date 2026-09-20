@@ -8,12 +8,12 @@ meta:
     +KLayout.SealRing: KLayout.Render
 
     # Disable KLayout DRC
-    #KLayout.DRC: null
-    #Checker.KLayoutDRC: null
+    KLayout.DRC: null
+    Checker.KLayoutDRC: null
 
     # Disable KLayout antenna check
-    #KLayout.Antenna: null
-    #Checker.KLayoutAntenna: null
+    KLayout.Antenna: null
+    Checker.KLayoutAntenna: null
 
     # Disable KLayout density check
     #KLayout.Density: null
@@ -143,8 +143,8 @@ MAGIC_GDS_FLATGLOB:
 
 # Floorplanning, 0.5 x 0.5 slot
 FP_SIZING: absolute
-DIE_AREA: [0, 0, 1936, 5122]
-CORE_AREA: [442, 442, 1494, 4680]
+DIE_AREA: [0, 0, 1936, 2531]
+CORE_AREA: [442, 442, 1494, 2089]
 
 # Specify the pad instances for the padring
 PAD_SOUTH: [
