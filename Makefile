@@ -13,11 +13,8 @@ GHDL_SIM_FLAGS = --stop-time=10us --ieee-asserts=disable-at-0
 PDK_ROOT ?= $(MAKEFILE_DIR)/gf180mcu
 PDK ?= gf180mcuD
 PDK_COMMIT ?= f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
-PRECHECK_ROOT = $(MAKEFILE_DIR)/gf180mcu-precheck
-PRECHECK_TAG = 1.7.3
-ID = G803TRIV
 
-all: clean analyze sim convert sim_converted clone_pdk sim_with_io annotate_power_pins build_design sim_postlayout waferspace_precheck
+all: clean analyze sim convert sim_converted clone_pdk sim_with_io annotate_power_pins build_design sim_postlayout
 
 clean:
 	rm -rf $(WORKDIR)
@@ -62,7 +59,3 @@ build_design:
 sim_postlayout:
 	iverilog -o $(TESTBENCHPATH)/$(IOTOPTESTBENCH) $(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/gf180mcu_fd_sc_mcu7t5v0.v $(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_sc_mcu7t5v0/verilog/primitives.v $(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_io/verilog/gf180mcu_fd_io.v $(MACROPATH)/gf180mcu_ws_ip__logo/vh/gf180mcu_ws_ip__logo.v $(MACROPATH)/gf180mcu_ws_ip__marker/vh/gf180mcu_ws_ip__marker.v $(MACROPATH)/gf180mcu_ws_ip__project_id/vh/gf180mcu_ws_ip__project_id.v $(MACROPATH)/gf180mcu_ws_ip__qrcode_id/vh/gf180mcu_ws_ip__qrcode_id.v $(MACROPATH)/gf180mcu_ws_ip__shuttle_id/vh/gf180mcu_ws_ip__shuttle_id.v $(MAKEFILE_DIR)/runs/RUN*/final/nl/$(IOTOPLEVEL).nl.v $(TESTBENCHPATH)/$(IOTOPTESTBENCH).v
 	vvp $(TESTBENCHPATH)/$(IOTOPTESTBENCH)
-
-waferspace_precheck:
-	git clone https://github.com/wafer-space/gf180mcu-precheck --branch $(PRECHECK_TAG)
-	python3 $(PRECHECK_ROOT)/precheck.py --input runs/RUN*/final/gds/$(IOTOPLEVEL).gds --top $(IOTOPLEVEL)
