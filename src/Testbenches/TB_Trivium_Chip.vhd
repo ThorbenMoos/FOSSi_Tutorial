@@ -27,7 +27,7 @@ architecture Behavioral of TB_Trivium_Chip is
     constant seed : STD_LOGIC_VECTOR (287 downto 0) := x"d099059daa1b3475fe218a1f1148a1934e9b40faf363b5221028b68e40aa611e2de0726b";
     
     signal notclk : STD_LOGIC;
-    constant clk_period : time := 10ns;
+    constant clk_period : time := 10 ns;
     
 begin
 
