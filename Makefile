@@ -52,6 +52,10 @@ sim_with_io:
 	iverilog -g2012 -o $(TESTBENCHPATH)/$(IOTOPTESTBENCH) $(TESTBENCHPATH)/$(IOTOPTESTBENCH).v $(PDK_ROOT)/$(PDK)/libs.ref/gf180mcu_fd_io/verilog/gf180mcu_fd_io.v $(MACROPATH)/gf180mcu_ws_ip__logo/vh/gf180mcu_ws_ip__logo.v $(MACROPATH)/gf180mcu_ws_ip__marker/vh/gf180mcu_ws_ip__marker.v $(MACROPATH)/gf180mcu_ws_ip__project_id/vh/gf180mcu_ws_ip__project_id.v $(MACROPATH)/gf180mcu_ws_ip__qrcode_id/vh/gf180mcu_ws_ip__qrcode_id.v $(MACROPATH)/gf180mcu_ws_ip__shuttle_id/vh/gf180mcu_ws_ip__shuttle_id.v ${TOPLEVEL}.v ${IOTOPLEVEL}.sv
 	vvp $(TESTBENCHPATH)/$(IOTOPTESTBENCH)
 
+annotate_power_pins:
+	sed -i 's/(input/(\n   `ifdef USE_POWER_PINS\n   inout wire VSS,\n   inout wire VDD,\n   `endif\n   input/g' $(TOPLEVEL).v
+	sed -z -i 's/(\n    \./(\n    `ifdef USE_POWER_PINS\n    \.VSS(VSS),\n    \.VDD(VDD),\n    `endif\n    \./g' $(TOPLEVEL).v
+	
 build_design:
 	librelane $(IOTOPLEVEL).yaml --pdk $(PDK) --pdk-root $(PDK_ROOT) --manual-pdk
 

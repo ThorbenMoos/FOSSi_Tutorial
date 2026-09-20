@@ -8,7 +8,7 @@ reg [127:0] keystream;
 reg [3:0] state = 3'b000;
 
 wire clk_PAD, rst_PAD, seed_reg_en_PAD, triv_rst_PAD, triv_en_PAD;
-wire [3:0] data_in_PAD
+wire [3:0] data_in_PAD;
 wire [3:0] data_out;
 wire [287:0] seed;
 wire notclk;
