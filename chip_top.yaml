@@ -65,7 +65,7 @@ IGNORE_DISCONNECTED_MODULES:
 # Clock
 CLOCK_PORT: clk_PAD
 CLOCK_NET: clk_pad/Y
-CLOCK_PERIOD: 40 # 25 MHz
+CLOCK_PERIOD: 100 # 10 MHz
 
 # Fix hold violations
 PL_RESIZER_HOLD_SLACK_MARGIN: 0.35
@@ -74,7 +74,7 @@ GRT_RESIZER_HOLD_SLACK_MARGIN: 0.3
 
 # Increase for more logic
 # on your die
-PL_TARGET_DENSITY_PCT: 35
+PL_TARGET_DENSITY_PCT: 50
 GRT_ALLOW_CONGESTION: true
 
 # Fix antenna violations after DRT
@@ -141,7 +141,7 @@ MAGIC_GDS_FLATGLOB:
 - "xdec32_*"
 - "sa_*"
 
-# Floorplanning, 0.5x1 slot, tall narrow die
+# Floorplanning, 0.5 x 0.5 slot
 FP_SIZING: absolute
 DIE_AREA: [0, 0, 1936, 5122]
 CORE_AREA: [442, 442, 1494, 4680]
@@ -154,8 +154,6 @@ PAD_SOUTH: [
     clk_pad,
     rst_pad,
     seed_reg_en_pad,
-    triv_rst_pad,
-    triv_en_pad
 ]
 
 PAD_EAST: [
@@ -164,6 +162,8 @@ PAD_EAST: [
     
     "data_out\\[0\\].pad",
     "data_out\\[1\\].pad",
+    "data_out\\[2\\].pad",
+    "data_out\\[3\\].pad",
 ]
 
 PAD_NORTH: [
@@ -177,8 +177,8 @@ PAD_NORTH: [
 ]
 
 PAD_WEST: [
-    "data_out\\[3\\].pad",
-    "data_out\\[2\\].pad",
+    triv_rst_pad,
+    triv_en_pad
     
     "dvss_pads\\[3\\].pad",
     "dvdd_pads\\[3\\].pad",
