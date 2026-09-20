@@ -19,7 +19,7 @@ architecture Behavioral of TB_Trivium is
     signal seed : STD_LOGIC_VECTOR (287 downto 0);
     signal stream_out : STD_LOGIC_VECTOR (63 downto 0);
     
-    constant clk_period : time := 10ns;
+    constant clk_period : time := 10 ns;
     
 begin
 
