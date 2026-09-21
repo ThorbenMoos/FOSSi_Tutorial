@@ -10,7 +10,7 @@ MACROPATH = $(MAKEFILE_DIR)/macros
 WORKDIR = $(MAKEFILE_DIR)/work
 GHDL_FLAGS = --workdir=$(WORKDIR)
 GHDL_SIM_FLAGS = --stop-time=10us --ieee-asserts=disable-at-0
-PDK_ROOT ?= $(MAKEFILE_DIR)/gf180mcu
+PDK_ROOT ?= $(MAKEFILE_DIR)/../gf180mcu
 PDK ?= gf180mcuD
 PDK_COMMIT ?= f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
 

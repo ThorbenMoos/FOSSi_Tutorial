@@ -4,7 +4,7 @@ TOPLEVEL = Trivium
 WORKDIR = $(MAKEFILE_DIR)/work
 GHDL_FLAGS = --workdir=$(WORKDIR)
 GHDL_SIM_FLAGS = --stop-time=10us --ieee-asserts=disable-at-0
-PDK_ROOT ?= $(MAKEFILE_DIR)/gf180mcu
+PDK_ROOT ?= $(MAKEFILE_DIR)/../gf180mcu
 PDK ?= gf180mcuD
 PDK_COMMIT ?= f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
 
@@ -26,7 +26,7 @@ convert:
 	ghdl synth --out=verilog $(GHDL_FLAGS) $(TOPLEVEL) > $(TOPLEVEL).v
 
 clone_pdk:
-	ciel enable $(PDK_COMMIT) --pdk-root $(PDK_ROOT) --pdk-family $(PDK) --include-libraries gf180mcu_fd_sc_mcu7t5v0
+	ciel enable $(PDK_COMMIT) --pdk-root $(PDK_ROOT) --pdk-family $(PDK) --include-libraries gf180mcu_fd_io --include-libraries gf180mcu_fd_sc_mcu7t5v0
 	
 build_design:
 	librelane $(TOPLEVEL).yaml --pdk $(PDK) --pdk-root $(PDK_ROOT) --manual-pdk
