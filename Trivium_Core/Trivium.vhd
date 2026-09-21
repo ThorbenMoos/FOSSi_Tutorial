@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity Trivium is
-    Generic (output_bits : INTEGER := 64);
+    Generic (output_bits : INTEGER := 1);
     Port (  clk : in STD_LOGIC;
             rst : in STD_LOGIC;
             en : in STD_LOGIC;
