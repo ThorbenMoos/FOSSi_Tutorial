@@ -19,7 +19,6 @@ all: clean analyze sim convert sim_converted clone_pdk sim_with_io annotate_powe
 clean:
 	rm -rf $(WORKDIR)
 	rm -rf $(PDK_ROOT)
-	rm -rf $(PRECHECK_ROOT)
 	rm -rf $(MAKEFILE_DIR)/runs
 	rm -rf $(MACROPATH)/*/runs
 	rm -rf $(MAKEFILE_DIR)/*.v
@@ -35,7 +34,7 @@ sim:
 	ghdl -r $(GHDL_FLAGS) $(TOPTESTBENCH) $(GHDL_SIM_FLAGS)
 	
 convert:
-	ghdl synth --latches --out=verilog $(GHDL_FLAGS) $(TOPLEVEL) > $(TOPLEVEL).v
+	ghdl synth --out=verilog $(GHDL_FLAGS) $(TOPLEVEL) > $(TOPLEVEL).v
 	
 sim_converted:
 	iverilog -o $(TESTBENCHPATH)/$(TOPTESTBENCH)_verilog $(TESTBENCHPATH)/$(TOPTESTBENCH)_verilog.v $(TOPLEVEL).v
