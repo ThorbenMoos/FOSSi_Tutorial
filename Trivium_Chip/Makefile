@@ -18,7 +18,6 @@ all: clean analyze sim convert sim_converted clone_pdk sim_with_io annotate_powe
 
 clean:
 	rm -rf $(WORKDIR)
-	rm -rf $(PDK_ROOT)
 	rm -rf $(MAKEFILE_DIR)/runs
 	rm -rf $(MACROPATH)/*/runs
 	rm -rf $(MAKEFILE_DIR)/*.v
@@ -41,7 +40,6 @@ sim_converted:
 	vvp $(TESTBENCHPATH)/$(TOPTESTBENCH)_verilog
 
 clone_pdk:
-	rm -rf $(MAKEFILE_DIR)/gf180mcu
 	ciel enable $(PDK_COMMIT) --pdk-root $(PDK_ROOT) --pdk-family $(PDK) --include-libraries gf180mcu_fd_io --include-libraries gf180mcu_fd_sc_mcu7t5v0
 	
 sim_with_io:
