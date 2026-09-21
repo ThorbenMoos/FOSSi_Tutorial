@@ -22,8 +22,8 @@ meta:
     # Save time during development
     # Enable for sign-off
     OpenROAD.IRDropReport: null
-    #Magic.DRC: null
-    #Checker.MagicDRC: null
+    Magic.DRC: null
+    Checker.MagicDRC: null
     KLayout.XOR: null
     #Netgen.LVS: null
     #Checker.LVS: null
