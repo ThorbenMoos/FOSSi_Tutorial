@@ -1,0 +1,339 @@
+meta:
+  version: 3
+  flow: Chip
+  substituting_steps:
+
+    # Render the layout after sealring insertion
+    KLayout.Render: null
+    +KLayout.SealRing: KLayout.Render
+
+    # Disable KLayout DRC
+    KLayout.DRC: null
+    Checker.KLayoutDRC: null
+
+    # Disable KLayout antenna check
+    KLayout.Antenna: null
+    Checker.KLayoutAntenna: null
+
+    # Disable KLayout density check
+    KLayout.Density: null
+    Checker.KLayoutDensity: null
+
+    # Save time during development
+    # Enable for sign-off
+    OpenROAD.IRDropReport: null
+    Magic.DRC: null
+    Checker.MagicDRC: null
+    KLayout.XOR: null
+    #Netgen.LVS: null
+    #Checker.LVS: null
+
+DESIGN_NAME: chip_top
+VERILOG_FILES:
+- dir::chip_top.sv
+- dir::Trivium_Chip.v
+
+# Enable plugin for better SystemVerilog support
+# USE_SLANG: True
+# SLANG_ARGUMENTS: ['--keep-hierarchy']
+
+# Slightly smaller file sizes
+PRIMARY_GDSII_STREAMOUT_TOOL: klayout
+
+# SDC files
+PNR_SDC_FILE: dir::chip_top.sdc
+SIGNOFF_SDC_FILE: dir::chip_top.sdc
+FALLBACK_SDC: dir::chip_top.sdc
+
+# Power / ground nets
+VDD_NETS:
+- VDD
+GND_NETS:
+- VSS
+VERILOG_POWER_DEFINE: "USE_POWER_PINS"
+
+# We need to add gf180mcu_fd_io__bi_24t
+# due to the unused Y output for output only pads
+IGNORE_DISCONNECTED_MODULES:
+- gf180mcu_fd_io__bi_24t
+- gf180mcu_ws_ip__qrcode_id
+- gf180mcu_ws_ip__shuttle_id
+- gf180mcu_ws_ip__project_id
+- gf180mcu_ws_ip__logo
+- gf180mcu_ws_ip__marker
+
+# Clock
+CLOCK_PORT: clk_PAD
+CLOCK_NET: clk_pad/Y
+CLOCK_PERIOD: 100 # 10 MHz
+
+# Fix hold violations
+PL_RESIZER_HOLD_SLACK_MARGIN: 0.35
+PL_RESIZER_ALLOW_SETUP_VIOS: True
+GRT_RESIZER_HOLD_SLACK_MARGIN: 0.3
+
+# Increase for more logic
+# on your die
+PL_TARGET_DENSITY_PCT: 10
+GRT_ALLOW_CONGESTION: true
+
+# Fix antenna violations after DRT
+DRT_ANTENNA_REPAIR_ITERS: 10
+DRT_ANTENNA_MARGIN: 10 # %
+
+# PDN
+PDN_CFG: dir::pdn_cfg.tcl
+PDN_ENABLE_PINS: False
+
+# PDN - Straps
+PDN_VWIDTH: 5
+PDN_HWIDTH: 5
+PDN_VSPACING: 1
+PDN_HSPACING: 1
+PDN_VPITCH: 75
+PDN_HPITCH: 75
+
+# PDN - Core ring
+PDN_CORE_RING: True
+# Maximum metal width without slotting: 30um
+PDN_CORE_RING_VWIDTH: 25
+PDN_CORE_RING_HWIDTH: 25
+PDN_CORE_RING_CONNECT_TO_PADS: True
+PDN_CORE_VERTICAL_LAYER: Metal4
+PDN_CORE_HORIZONTAL_LAYER: Metal3
+PDN_CORE_RING_CONNECT_TO_PAD_LAYERS: [Metal2]
+
+# Do not error on magic DRC violations
+# Note: Passing magic DRC is not required for the submission.
+# However, it is recommended to fix or carefully review all violations.
+ERROR_ON_MAGIC_DRC: False
+
+# Prevent false positive DRC errors in I/O cells
+MAGIC_GDS_FLATGLOB:
+# For contacts
+- "*_CDNS_*"
+# Foundry provided SRAMs
+- "*$$*"
+- "M1_N*"
+- "M1_P*"
+- "M2_M1*"
+- "M3_M2*"
+- "nmos_5p0*"
+- "nmos_1p2*"
+- "pmos_5p0*"
+- "pmos_1p2*"
+- "via1_*"
+- "ypass_gate*"
+- "G_ring_*"
+# These additional cells must be flattened to get rid of 3.3V devices
+# (DUALGATE drawn into high-level cells)
+- "dcap_103*"
+- "din_*"
+- "mux821_*"
+- "rdummy_*"
+- "pmoscap_*"
+- "xdec_*"
+- "ypredec*"
+- "xpredec*"
+- "prexdec_*"
+- "xdec8_*"
+- "xdec16_*"
+- "xdec32_*"
+- "sa_*"
+
+# Floorplanning, 1 x 1 slot
+FP_SIZING: absolute
+DIE_AREA: [0, 0, 3932, 5122]
+CORE_AREA: [442, 442, 3490, 4680]
+
+# Specify the pad instances for the padring
+PAD_SOUTH: [
+    "dvdd_pads\\[0\\].pad",
+    "dvss_pads\\[0\\].pad",
+    
+    clk_pad,
+    rst_pad,
+    seed_reg_en_pad
+]
+
+PAD_EAST: [
+    "dvdd_pads\\[1\\].pad",
+    "dvss_pads\\[1\\].pad",
+    
+    "data_out\\[0\\].pad",
+    "data_out\\[1\\].pad",
+    "data_out\\[2\\].pad",
+    "data_out\\[3\\].pad"
+]
+
+PAD_NORTH: [
+    "data_in\\[3\\].pad",
+    "data_in\\[2\\].pad", 
+    "data_in\\[1\\].pad",
+    "data_in\\[0\\].pad",
+    
+    "dvss_pads\\[2\\].pad",
+    "dvdd_pads\\[2\\].pad"
+]
+
+PAD_WEST: [
+    triv_rst_pad,
+    triv_en_pad,
+    
+    "dvss_pads\\[3\\].pad",
+    "dvdd_pads\\[3\\].pad"
+]
+
+# Since we cannot meet the minimum density limit on Metal2,
+# ignore active metal on previous and subsequent layers
+# (DM.5_DM.7 and DM.4_DM.6). Dummy metal is moved to active
+# metal during the precheck.
+KLAYOUT_FILLER_OPTIONS:
+  Metal2_ignore_active: true
+
+# Because we have multiple power pads for one power domain
+MAGIC_EXT_UNIQUE: notopports
+
+# DRC settings
+# A high number of workers increases RAM usage,
+# but can significantly improve the performance.
+# workers * threads should equal the available
+# hardware threads for a best possible utilization.
+
+KLAYOUT_DRC_THREADS: 1
+
+# "max" equals max hardware threads
+KLAYOUT_DRC_OPTIONS:
+  decks: "all,-antenna,-density,-cup" # disable CUP for now
+  variant: ref::$PDK
+  workers: max
+
+KLAYOUT_DENSITY_OPTIONS:
+  decks: "density"
+  variant: ref::$PDK
+  workers: max
+
+KLAYOUT_ANTENNA_OPTIONS:
+  decks: "antenna"
+  variant: ref::$PDK
+  workers: max
+
+MACROS:
+  # required: will be replaced with actual content
+  gf180mcu_ws_ip__qrcode_id:
+    gds:
+      - dir::macros/gf180mcu_ws_ip__qrcode_id/gds/gf180mcu_ws_ip__qrcode_id.gds
+    lef:
+      - dir::macros/gf180mcu_ws_ip__qrcode_id/lef/gf180mcu_ws_ip__qrcode_id.lef
+    vh:
+      - dir::macros/gf180mcu_ws_ip__qrcode_id/vh/gf180mcu_ws_ip__qrcode_id.v
+    lib:
+      "*":
+        - dir::macros/gf180mcu_ws_ip__qrcode_id/lib/gf180mcu_ws_ip__qrcode_id.lib
+    instances:
+      qrcode_id:
+        location: [26, 26]
+        orientation: N
+
+  # required: will be replaced with actual content
+  gf180mcu_ws_ip__shuttle_id:
+    gds:
+      - dir::macros/gf180mcu_ws_ip__shuttle_id/gds/gf180mcu_ws_ip__shuttle_id.gds
+    lef:
+      - dir::macros/gf180mcu_ws_ip__shuttle_id/lef/gf180mcu_ws_ip__shuttle_id.lef
+    vh:
+      - dir::macros/gf180mcu_ws_ip__shuttle_id/vh/gf180mcu_ws_ip__shuttle_id.v
+    lib:
+      "*":
+        - dir::macros/gf180mcu_ws_ip__shuttle_id/lib/gf180mcu_ws_ip__shuttle_id.lib
+    instances:
+      shuttle_id:
+        location: [26, 175.6]
+        orientation: E
+
+  # required: will be replaced with actual content
+  gf180mcu_ws_ip__project_id:
+    gds:
+      - dir::macros/gf180mcu_ws_ip__project_id/gds/gf180mcu_ws_ip__project_id.gds
+    lef:
+      - dir::macros/gf180mcu_ws_ip__project_id/lef/gf180mcu_ws_ip__project_id.lef
+    vh:
+      - dir::macros/gf180mcu_ws_ip__project_id/vh/gf180mcu_ws_ip__project_id.v
+    lib:
+      "*":
+        - dir::macros/gf180mcu_ws_ip__project_id/lib/gf180mcu_ws_ip__project_id.lib
+    instances:
+      project_id:
+        location: [175.6, 26]
+        orientation: N
+
+  # required: top right corner marker
+  gf180mcu_ws_ip__marker:
+    gds:
+      - dir::macros/gf180mcu_ws_ip__marker/gds/gf180mcu_ws_ip__marker.gds
+    lef:
+      - dir::macros/gf180mcu_ws_ip__marker/lef/gf180mcu_ws_ip__marker.lef
+    vh:
+      - dir::macros/gf180mcu_ws_ip__marker/vh/gf180mcu_ws_ip__marker.v
+    lib:
+      "*":
+        - dir::macros/gf180mcu_ws_ip__marker/lib/gf180mcu_ws_ip__marker.lib
+    instances:
+      marker:
+        location: ["expr::($DIE_AREA[2] - (245 + 36))", "expr::($DIE_AREA[3] - (245 + 36))"]
+        orientation: N
+
+  gf180mcu_ws_ip__logo:
+    gds:
+      - dir::macros/gf180mcu_ws_ip__logo/gds/gf180mcu_ws_ip__logo.gds
+    lef:
+      - dir::macros/gf180mcu_ws_ip__logo/lef/gf180mcu_ws_ip__logo.lef
+    vh:
+      - dir::macros/gf180mcu_ws_ip__logo/vh/gf180mcu_ws_ip__logo.v
+    lib:
+      "*":
+        - dir::macros/gf180mcu_ws_ip__logo/lib/gf180mcu_ws_ip__logo.lib
+    instances:
+      wafer_space_logo:
+        location: [26, "expr::$DIE_AREA[3] - 169.25"]
+        orientation: N
+
+  trivium_4:
+    gds:
+      - dir::macros/trivium_4/runs/RUN_*/final/gds/trivium_4.gds
+    lef:
+      - dir::macros/trivium_4/runs/RUN_*/final/lef/trivium_4.lef
+    pnl:
+      - dir::macros/trivium_4/runs/RUN_*/final/pnl/trivium_4.pnl.v
+    nl:
+      - dir::macros/trivium_4/runs/RUN_*/final/nl/trivium_4.nl.v
+    spef:
+      "min_*":
+        - dir::macros/trivium_4/runs/RUN_*/final/spef/min/trivium_4.min.spef
+      "nom_*":
+        - dir::macros/trivium_4/runs/RUN_*/final/spef/nom/trivium_4.nom.spef
+      "max_*":
+        - dir::macros/trivium_4/runs/RUN_*/final/spef/max/trivium_4.max.spef
+    lib:
+      "min_ss_125C_4v50":
+        - dir::macros/trivium_4/runs/RUN_*/final/lib/min_ss_125C_4v50/trivium_4__min_ss_125C_4v50.lib
+      "min_tt_025C_5v00":
+        - dir::macros/trivium_4/runs/RUN_*/final/lib/min_tt_025C_5v00/trivium_4__min_tt_025C_5v00.lib
+      "min_ff_n40C_5v50":
+        - dir::macros/trivium_4/runs/RUN_*/final/lib/min_ff_n40C_5v50/trivium_4__min_ff_n40C_5v50.lib
+      "nom_ss_125C_4v50":
+        - dir::macros/trivium_4/runs/RUN_*/final/lib/nom_ss_125C_4v50/trivium_4__nom_ss_125C_4v50.lib
+      "nom_tt_025C_5v00":
+        - dir::macros/trivium_4/runs/RUN_*/final/lib/nom_tt_025C_5v00/trivium_4__nom_tt_025C_5v00.lib
+      "nom_ff_n40C_5v50":
+        - dir::macros/trivium_4/runs/RUN_*/final/lib/nom_ff_n40C_5v50/trivium_4__nom_ff_n40C_5v50.lib
+      "max_ss_125C_4v50":
+        - dir::macros/trivium_4/runs/RUN_*/final/lib/max_ss_125C_4v50/trivium_4__max_ss_125C_4v50.lib
+      "max_tt_025C_5v00":
+        - dir::macros/trivium_4/runs/RUN_*/final/lib/max_tt_025C_5v00/trivium_4__max_tt_025C_5v00.lib
+      "max_ff_n40C_5v50":
+        - dir::macros/trivium_4/runs/RUN_*/final/lib/max_ff_n40C_5v50/trivium_4__max_ff_n40C_5v50.lib
+    instances:
+      toplevel.triv:
+        location: [900, 900]
+        orientation: N

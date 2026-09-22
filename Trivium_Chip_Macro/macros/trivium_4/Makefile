@@ -13,7 +13,6 @@ all: clean analyze convert clone_pdk build_design
 clean:
 	rm -rf $(WORKDIR)
 	rm -rf $(MAKEFILE_DIR)/runs
-	rm -rf $(MACROPATH)/*/runs
 	rm -rf $(MAKEFILE_DIR)/*.v
 	ghdl --clean
 	
