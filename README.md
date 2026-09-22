@@ -17,7 +17,7 @@ nix-channel --add https://nixos.org/channels/nixpkgs-unstable
 nix-channel --update
 ```
 
-## Step II - Cloning this Repository and Opening Nix-Shell
+## Step II - Cloning this Repository and Opening a Nix-Shell
 
 To clone this repository and start a nix shell you may execute the following commands:
 
@@ -28,17 +28,17 @@ cd FOSSi_Tutorial
 nix-shell
 ```
 
-Wihin the nix-shell environment the librelane command is available in addition to a number of other useful utilities. Try running `librelane --help` and have a look at its usage.
+Within the nix-shell the librelane command is available in addition to a number of other useful utilities. Try running `librelane --help` and have a quick look at its usage (no need to read it all).
 
-## Step III - Clone the GF180MCU PDK
+## Step III - Cloning the GF180MCU PDK
 
-To clone the GF180MCU PDK, in particular the standard IO library and the 7 track standard cell library, run the following command:
+To clone the GF180MCU PDK, in particular its standard IO library and 7 track standard cell library, run the following command:
 
 ```
-ciel enable $(PDK_COMMIT) --pdk-root $(PDK_ROOT) --pdk-family $(PDK) --include-libraries gf180mcu_fd_io --include-libraries gf180mcu_fd_sc_mcu7t5v0
+ciel enable f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7 --pdk-root gf180mcu --pdk-family gf180mcuD --include-libraries gf180mcu_fd_io --include-libraries gf180mcu_fd_sc_mcu7t5v0
 ```
 
-## Step II - Executing the RTL -> GDS-II Flow to Build a Hard Macro
+## Step IV - Executing the RTL -> GDS-II Flow to Build a Hard Macro
 
 Navigate to the `Trivium_Chip_Macro/macros/trivium_4` directory:
 
@@ -53,10 +53,10 @@ ghdl -a Trivium.vhd
 ghdl synth Trivium > Trivium.v
 ```
 
+Now we can perform the full automated librelane flow to produce a clean GDS-II file implementing the Trivium module:
+
+```
+librelane Trivium.yaml --pdk gf180mcuD --pdk-root gf180mcu --manual-pdk
 ```
 
-Now we can perform the automated librelane flow to produce a clean GDS-II file implementing the Trivium module:
-
-
-
-Antenna, LVS and DRC should be reported as "Passed".
+On a machine with 8GB RAM and 2 Cores, this should take about 8 minutes. If everything goes well, the tool should report all Antenna, LVS and DRC checks as "Passed".

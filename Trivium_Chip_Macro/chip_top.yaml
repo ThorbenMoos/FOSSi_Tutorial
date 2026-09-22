@@ -298,41 +298,41 @@ MACROS:
         location: [26, "expr::$DIE_AREA[3] - 169.25"]
         orientation: N
 
-  trivium_4:
+  Trivium:
     gds:
-      - dir::macros/trivium_4/runs/RUN_*/final/gds/Trivium.gds
+      - dir::macros/Trivium/runs/RUN_*/final/gds/Trivium.gds
     lef:
-      - dir::macros/trivium_4/runs/RUN_*/final/lef/Trivium.lef
+      - dir::macros/Trivium/runs/RUN_*/final/lef/Trivium.lef
     pnl:
-      - dir::macros/trivium_4/runs/RUN_*/final/pnl/Trivium.pnl.v
+      - dir::macros/Trivium/runs/RUN_*/final/pnl/Trivium.pnl.v
     nl:
-      - dir::macros/trivium_4/runs/RUN_*/final/nl/Trivium.nl.v
+      - dir::macros/Trivium/runs/RUN_*/final/nl/Trivium.nl.v
     spef:
       "min_*":
-        - dir::macros/trivium_4/runs/RUN_*/final/spef/min/Trivium.min.spef
+        - dir::macros/Trivium/runs/RUN_*/final/spef/min/Trivium.min.spef
       "nom_*":
-        - dir::macros/trivium_4/runs/RUN_*/final/spef/nom/Trivium.nom.spef
+        - dir::macros/Trivium/runs/RUN_*/final/spef/nom/Trivium.nom.spef
       "max_*":
-        - dir::macros/trivium_4/runs/RUN_*/final/spef/max/Trivium.max.spef
+        - dir::macros/Trivium/runs/RUN_*/final/spef/max/Trivium.max.spef
     lib:
       "min_ss_125C_4v50":
-        - dir::macros/trivium_4/runs/RUN_*/final/lib/min_ss_125C_4v50/Trivium__min_ss_125C_4v50.lib
+        - dir::macros/Trivium/runs/RUN_*/final/lib/min_ss_125C_4v50/Trivium__min_ss_125C_4v50.lib
       "min_tt_025C_5v00":
-        - dir::macros/trivium_4/runs/RUN_*/final/lib/min_tt_025C_5v00/Trivium__min_tt_025C_5v00.lib
+        - dir::macros/Trivium/runs/RUN_*/final/lib/min_tt_025C_5v00/Trivium__min_tt_025C_5v00.lib
       "min_ff_n40C_5v50":
-        - dir::macros/trivium_4/runs/RUN_*/final/lib/min_ff_n40C_5v50/Trivium__min_ff_n40C_5v50.lib
+        - dir::macros/Trivium/runs/RUN_*/final/lib/min_ff_n40C_5v50/Trivium__min_ff_n40C_5v50.lib
       "nom_ss_125C_4v50":
-        - dir::macros/trivium_4/runs/RUN_*/final/lib/nom_ss_125C_4v50/Trivium__nom_ss_125C_4v50.lib
+        - dir::macros/Trivium/runs/RUN_*/final/lib/nom_ss_125C_4v50/Trivium__nom_ss_125C_4v50.lib
       "nom_tt_025C_5v00":
-        - dir::macros/trivium_4/runs/RUN_*/final/lib/nom_tt_025C_5v00/Trivium__nom_tt_025C_5v00.lib
+        - dir::macros/Trivium/runs/RUN_*/final/lib/nom_tt_025C_5v00/Trivium__nom_tt_025C_5v00.lib
       "nom_ff_n40C_5v50":
-        - dir::macros/trivium_4/runs/RUN_*/final/lib/nom_ff_n40C_5v50/Trivium__nom_ff_n40C_5v50.lib
+        - dir::macros/Trivium/runs/RUN_*/final/lib/nom_ff_n40C_5v50/Trivium__nom_ff_n40C_5v50.lib
       "max_ss_125C_4v50":
-        - dir::macros/trivium_4/runs/RUN_*/final/lib/max_ss_125C_4v50/Trivium__max_ss_125C_4v50.lib
+        - dir::macros/Trivium/runs/RUN_*/final/lib/max_ss_125C_4v50/Trivium__max_ss_125C_4v50.lib
       "max_tt_025C_5v00":
-        - dir::macros/trivium_4/runs/RUN_*/final/lib/max_tt_025C_5v00/Trivium__max_tt_025C_5v00.lib
+        - dir::macros/Trivium/runs/RUN_*/final/lib/max_tt_025C_5v00/Trivium__max_tt_025C_5v00.lib
       "max_ff_n40C_5v50":
-        - dir::macros/trivium_4/runs/RUN_*/final/lib/max_ff_n40C_5v50/Trivium__max_ff_n40C_5v50.lib
+        - dir::macros/Trivium/runs/RUN_*/final/lib/max_ff_n40C_5v50/Trivium__max_ff_n40C_5v50.lib
     instances:
       toplevel.triv:
         location: [900, 900]

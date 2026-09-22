@@ -51,6 +51,7 @@ annotate_power_pins:
 	
 erase_macro_rtl:
 	sed -z -i 's/module trivium_4.*n73};\nendmodule\n\n//g' ${TOPLEVEL}.v
+	sed -i 's/trivium_4/Trivium/g' ${TOPLEVEL}.v
 	
 build_design:
 	librelane $(IOTOPLEVEL).yaml --pdk $(PDK) --pdk-root $(PDK_ROOT) --manual-pdk
