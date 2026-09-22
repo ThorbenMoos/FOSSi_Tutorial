@@ -62,7 +62,7 @@ librelane Trivium.yaml --pdk gf180mcuD --pdk-root ../../../gf180mcu --manual-pdk
 On a machine with 8GB RAM and 2 Cores, this should take about 8 minutes. While waiting you may want to pay some attention to the different flow steps that are executed and check the contents of the generated `runs` folder that are appearing as the tool progresses. If everything goes well, the tool should report all Antenna, LVS and DRC checks as "Passed". Congratulations, you have produced a manufacturable chip design! You can have a look at it using [Klayout](https://github.com/klayout/klayout) by prompting:
 
 ```
-klayout runs/RUN*/final/Trivium.gds
+klayout runs/RUN*/final/gds/Trivium.gds
 ```
 
 Now we can try to improve the macro's cost and performance by decreasing the "CLOCK_PERIOD" (e.g. to 10) and increasing the "FP_CORE_UTIL" (e.g. to 40) value in the `Trivium.yaml` configuration file. Then we can re-run the previous steps with the prepared Makefile by calling:
