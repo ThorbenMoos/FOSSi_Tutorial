@@ -14,7 +14,7 @@ PDK_ROOT ?= $(MAKEFILE_DIR)/../gf180mcu
 PDK ?= gf180mcuD
 PDK_COMMIT ?= f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
 
-all: clean analyze sim convert sim_converted clone_pdk sim_with_io annotate_power_pins build_design sim_postlayout
+all: clean analyze sim convert sim_converted clone_pdk sim_with_io annotate_power_pins erase_macro_rtl build_design sim_postlayout
 
 clean:
 	rm -rf $(WORKDIR)

@@ -40,10 +40,10 @@ ciel enable f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7 --pdk-root gf180mcu --pdk-f
 
 ## Step IV - Executing the RTL -> GDS-II Flow to Build a Hard Macro
 
-Navigate to the `Trivium_Chip_Macro/macros/trivium_4` directory:
+Navigate to the `Trivium_Chip_Macro/macros/Trivium` directory:
 
 ```
-cd Trivium_Chip_Macro/macros/trivium_4
+cd Trivium_Chip_Macro/macros/Trivium
 ```
 
 Take a look at the `Trivium.vhd` source file and try to understand how the module works. Note the "output_bits" generic (equivalent to a Verilog parameter) which determines how many keystream bits the module produces per clock cycle. A corresponding testbench for output_bits=4 is provided in the `Testbenches` subfolder. Then open the `Trivium.yaml` configuration file and have a look at the different parameters. In particular, try to understand the "CLOCK_PERIOD" and "FP_CORE_UTIL" parameters, if needed with the help of the [LibreLane documentation](https://librelane.readthedocs.io/en/latest). Since LibreLane does not support VHDL, we first need to quickly convert the RTL code into Verilog:
@@ -59,4 +59,40 @@ Now we can perform the full automated librelane flow to produce a clean GDS-II f
 librelane Trivium.yaml --pdk gf180mcuD --pdk-root gf180mcu --manual-pdk
 ```
 
-On a machine with 8GB RAM and 2 Cores, this should take about 8 minutes. If everything goes well, the tool should report all Antenna, LVS and DRC checks as "Passed".
+On a machine with 8GB RAM and 2 Cores, this should take about 8 minutes. If everything goes well, the tool reports all Antenna, LVS and DRC checks as "Passed". Congratulations, you have produced a manufacturable chip design! You can have a look at it using [Klayout](https://github.com/klayout/klayout):
+
+```
+klayout runs/RUN*/final/Trivium.gds
+```
+
+Now we can try to improve the macro's cost and performance by decreasing the "CLOCK_PERIOD" (e.g. to 10) and increasing the "FP_CORE_UTIL" (e.g. to 40) value in the `Trivium.yaml` configuration file. Then we can re-run the previous steps with the prepared Makefile by calling:
+
+```
+make all
+```
+
+While you are waiting, feel free to explore the `runs` folder to see the outputs of the different steps of the LibreLane flow. Once finished you can open the design in Klayout again and may notice that it has gotten smaller and more dense compared to before.
+
+## Step V - Integrating the Hard Macro into a Chip
+
+For this step we have integrated the Trivium design into a toplevel module that let's you provide the seed serially through a 4-bit bus. You may have a quick look at the `FOSSi_Tutorial/Trivium_Chip_Macro/src/Trivium_Chip.vhd` file. Then we have integrated the toplevel `Trivium_Chip` module into the [wafer.space project template](https://github.com/wafer-space/gf180mcu-project-template). You may have a look at `FOSSi_Tutorial/Trivium_Chip_Macro/chip_top.sv` and `FOSSi_Tutorial/Trivium_Chip_Macro/chip_top.yaml` to see how the IO pads, IO ring and hard macros are instantiated and placed. You may execute the entire flow with the prepared Makefile:
+
+```
+make all
+```
+
+On a machine with 8GB RAM and 2 Cores, this should take about 35 minutes. If everything goes well, the tool reports all Antenna and LVS checks as "Passed". Full DRC checks have not been performed for time reasons. They can be activated at the top of the `chip_top.yaml` file if you want to play around after the tutorial. Congratulations, you have produced a manufacturable chip design that can be submitted to a foundry for fabrication! You can open it in Klayout and have a look. You can rerun this step after the tutorial with a different placement of the hard macro to see how the optics of the GDS file change.
+
+## Step VI - Full Design in a Single run
+
+As an alternative to the previous flow of first pre-hardening a macro and then integrating it into a chip frame, you can also do everything in one go. For this, you may navigate to the `FOSSi_Tutorial/Trivium_Chip` folder and once again use the prepared Makefile:
+
+```
+make all
+```
+
+On a machine with 8GB RAM and 2 Cores, this should take about 35 minutes. If everything goes well, the tool reports all Antenna and LVS checks as "Passed". Full DRC checks have once again not been performed for time reasons. Open the chip design in Klayout and see how different it looks from the macro-based design. What do you notice?
+
+## Step VII - Advanced: Increase the Throughput of your chip
+
+If the previous tasks have been easy for you, you may now go ahead and increase the "output_bits" parameter in the `FOSSi_Tutorial/Trivium_Chip/src/Trivium_Chip.vhd` and adapt the `FOSSi_Tutorial/Trivium_Chip/chip_top.sv` and `FOSSi_Tutorial/Trivium_Chip/chip_top.yaml`files accordingly to instantiate sufficiently many IO cells for the larger output bus. There is plenty of space in the IO rind and on the chip. However, depending of your choice of output bits per cycle you may need to increase the clock period. Rerun the design and look at the result.
