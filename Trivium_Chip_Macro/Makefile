@@ -19,7 +19,6 @@ all: clean analyze sim convert sim_converted clone_pdk sim_with_io annotate_powe
 clean:
 	rm -rf $(WORKDIR)
 	rm -rf $(MAKEFILE_DIR)/runs
-	rm -rf $(MACROPATH)/*/runs
 	rm -rf $(MAKEFILE_DIR)/*.v
 	ghdl --clean
 	
