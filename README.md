@@ -1,8 +1,8 @@
 # FOSSi Tutorial
-This is a tutorial on the open silicon back-end based on GlobalFoundries' open-source [GF180MCU](https://gf180mcu-pdk.readthedocs.io/en/latest) PDK, the [wafer.space](https://wafer.space) [project template](https://github.com/wafer-space/gf180mcu-project-template), and the [LibreLane](https://librelane.readthedocs.io/en/latest) open-source EDA tool. It implements the [Trivium](https://doi.org/10.1007/11836810_13) stream cipher which is also a popular choice for efficient concurrent [pseudo-randomness generation in hardware masking schemes](https://doi.org/10.62056/akdkp2fgx).
+This is a tutorial on the open silicon back-end based on GlobalFoundries' open-source [GF180MCU](https://gf180mcu-pdk.readthedocs.io/en/latest) PDK, the [wafer.space](https://wafer.space) [project template](https://github.com/wafer-space/gf180mcu-project-template), and the [LibreLane](https://librelane.readthedocs.io/en/latest) open-source EDA tool. It implements the [Trivium](https://doi.org/10.1007/11836810_13) stream cipher which is a popular choice for efficient concurrent [pseudo-randomness generation in hardware masking schemes](https://doi.org/10.62056/akdkp2fgx). All commands have been tested on Ubuntu 26.04.01 LTS.
 
 ## Step I - Nix/LibreLane Installation
-To get started we first need to install LibreLane. It is provided as a [nix-based reproducible build](https://librelane.readthedocs.io/en/stable/installation/nix_installation/installation_linux.html) cached by the [FOSSi foundation](https://fossi-foundation.org) and can be installed using the following commands:
+To get started we first need to install LibreLane. It is provided as a [nix-based reproducible build](https://librelane.readthedocs.io/en/stable/installation/nix_installation/installation_linux.html) cached by the [FOSSi foundation](https://fossi-foundation.org) and can be installed using the following commands on Ubuntu:
 
 ```
 sudo apt update
@@ -59,7 +59,7 @@ Now we can perform the full automated librelane flow to produce a clean GDS-II f
 librelane Trivium.yaml --pdk gf180mcuD --pdk-root gf180mcu --manual-pdk
 ```
 
-On a machine with 8GB RAM and 2 Cores, this should take about 8 minutes. If everything goes well, the tool reports all Antenna, LVS and DRC checks as "Passed". Congratulations, you have produced a manufacturable chip design! You can have a look at it using [Klayout](https://github.com/klayout/klayout):
+On a machine with 8GB RAM and 2 Cores, this should take about 8 minutes. While waiting you may want to pay some attention to the different flow steps that are executed and check the contents of the generated `runs` folder that are appearing as the tool progresses. If everything goes well, the tool should report all Antenna, LVS and DRC checks as "Passed". Congratulations, you have produced a manufacturable chip design! You can have a look at it using [Klayout](https://github.com/klayout/klayout) by prompting:
 
 ```
 klayout runs/RUN*/final/Trivium.gds
