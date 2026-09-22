@@ -81,7 +81,7 @@ For this step we have integrated the Trivium design into a toplevel module that 
 make all
 ```
 
-On a machine with 8GB RAM and 2 Cores, this should take about 45 minutes. If everything goes well, the tool reports all Antenna and LVS checks as "Passed". Full DRC checks have not been performed for time reasons. They can be activated at the top of the `chip_top.yaml` file if you want to play around after the tutorial. Congratulations, you have produced a manufacturable chip design that can be submitted to a foundry for fabrication! You can open it in Klayout and have a look. You can rerun this step after the tutorial with a different placement of the hard macro to see how the optics of the GDS file change.
+On a machine with 8GB RAM and 2 Cores, this should take about 45 minutes, but you can see the intermediate results as they appear. The first GDS output should be ready a good 10 minutes before the finish. If everything goes well, the tool should report all Antenna and LVS checks as "Passed". Full DRC checks have not been performed for time reasons. They can be activated at the top of the `chip_top.yaml` file if you want to play around after the tutorial. Congratulations, you have produced a manufacturable chip design that can be submitted to a foundry for fabrication! You can open it in Klayout and have a look. You can rerun this step after the tutorial with a different placement of the hard macro to see how the optics of the GDS file change.
 
 ## Step VI - Full Design in a Single run
 
@@ -93,6 +93,6 @@ make all
 
 On a machine with 8GB RAM and 2 Cores, this should take about 35 minutes. If everything goes well, the tool reports all Antenna and LVS checks as "Passed". Full DRC checks have once again not been performed for time reasons. Open the chip design in Klayout and see how different it looks from the macro-based design. What do you notice?
 
-## Step VII - Advanced: Increase the Throughput of your chip
+## Step VII - Advanced: Increase the Throughput of your Chip
 
 If the previous tasks have been easy for you, you may now go ahead and increase the "output_bits" parameter in the `FOSSi_Tutorial/Trivium_Chip/src/Trivium_Chip.vhd` and adapt the `FOSSi_Tutorial/Trivium_Chip/chip_top.sv` and `FOSSi_Tutorial/Trivium_Chip/chip_top.yaml`files accordingly to instantiate sufficiently many IO cells for the larger output bus. There is plenty of space in the IO rind and on the chip. However, depending of your choice of output bits per cycle you may need to increase the clock period. Rerun the design and look at the result.
