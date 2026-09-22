@@ -50,13 +50,13 @@ Take a look at the `Trivium.vhd` source file and try to understand how the modul
 
 ```
 ghdl -a Trivium.vhd
-ghdl synth Trivium > Trivium.v
+ghdl synth --out=verilog Trivium > Trivium.v
 ```
 
 Now we can perform the full automated librelane flow to produce a clean GDS-II file implementing the Trivium module:
 
 ```
-librelane Trivium.yaml --pdk gf180mcuD --pdk-root gf180mcu --manual-pdk
+librelane Trivium.yaml --pdk gf180mcuD --pdk-root ../../../gf180mcu --manual-pdk
 ```
 
 On a machine with 8GB RAM and 2 Cores, this should take about 8 minutes. While waiting you may want to pay some attention to the different flow steps that are executed and check the contents of the generated `runs` folder that are appearing as the tool progresses. If everything goes well, the tool should report all Antenna, LVS and DRC checks as "Passed". Congratulations, you have produced a manufacturable chip design! You can have a look at it using [Klayout](https://github.com/klayout/klayout) by prompting:
