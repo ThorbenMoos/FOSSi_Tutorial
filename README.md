@@ -81,7 +81,7 @@ For this step we have integrated the Trivium design into a toplevel module that 
 make all
 ```
 
-On a machine with 8GB RAM and 2 Cores, this should take about 35 minutes. If everything goes well, the tool reports all Antenna and LVS checks as "Passed". Full DRC checks have not been performed for time reasons. They can be activated at the top of the `chip_top.yaml` file if you want to play around after the tutorial. Congratulations, you have produced a manufacturable chip design that can be submitted to a foundry for fabrication! You can open it in Klayout and have a look. You can rerun this step after the tutorial with a different placement of the hard macro to see how the optics of the GDS file change.
+On a machine with 8GB RAM and 2 Cores, this should take about 45 minutes. If everything goes well, the tool reports all Antenna and LVS checks as "Passed". Full DRC checks have not been performed for time reasons. They can be activated at the top of the `chip_top.yaml` file if you want to play around after the tutorial. Congratulations, you have produced a manufacturable chip design that can be submitted to a foundry for fabrication! You can open it in Klayout and have a look. You can rerun this step after the tutorial with a different placement of the hard macro to see how the optics of the GDS file change.
 
 ## Step VI - Full Design in a Single run
 
