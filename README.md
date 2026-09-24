@@ -38,6 +38,8 @@ To clone the GF180MCU PDK, in particular its standard IO library and 7 track sta
 ciel enable f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7 --pdk-root gf180mcu --pdk-family gf180mcuD --include-libraries gf180mcu_fd_io --include-libraries gf180mcu_fd_sc_mcu7t5v0
 ```
 
+You may have a look at the 3D geometries of the cells contained in these two libraries at https://agentdavo.github.io/GDS3D.
+
 ## Step IV - Executing the RTL -> GDS-II Flow to Build a Hard Macro
 
 Navigate to the `Trivium_Chip_Macro/macros/Trivium` directory:
@@ -81,7 +83,7 @@ For this step we have integrated the Trivium design into a toplevel module that 
 make all
 ```
 
-On a machine with 8GB RAM and 2 Cores, this should take about 35 minutes (can be significantly faster on bigger machines), but you can see the intermediate results as they appear. The first GDS output should be ready a good 10 minutes before the finish. If everything goes well, the tool should report all Antenna and LVS checks as "Passed". Full DRC checks have not been performed for time reasons. They can be activated at the top of the `chip_top.yaml` file if you want to play around after the tutorial. Congratulations, you have produced a manufacturable chip design that can be submitted to a foundry for fabrication! You can open it in Klayout and have a look. You can rerun this step after the tutorial with a different placement of the hard macro to see how the optics of the GDS file change.
+On a machine with 8GB RAM and 2 Cores, this should take about 35 minutes (can be significantly faster on bigger machines), but you can see the intermediate results as they appear. The first GDS output should be ready a good 10 minutes before the finish. If everything goes well, the tool should report all Antenna and LVS checks as "Passed". Full DRC checks have not been performed for time reasons. They can be activated at the top of the `chip_top.yaml` file if you want to play around after the tutorial. Congratulations, you have produced a manufacturable chip design that can be submitted to a foundry for fabrication! You can open it in Klayout and have a look. If you have time, rerun this step with a different placement of the hard macro (specified in the `chip_top.yaml` file) to see how the optics of the GDS file change.
 
 ## Step VI - Full Design in a Single Run
 
@@ -95,4 +97,4 @@ On a machine with 8GB RAM and 2 Cores, this should take about 35 minutes (can be
 
 ## Step VII - Advanced: Increase the Throughput of your Chip
 
-If the previous tasks have been easy for you, you may now go ahead and increase the "output_bits" parameter in the `FOSSi_Tutorial/Trivium_Chip/src/Trivium_Chip.vhd` and adapt the `FOSSi_Tutorial/Trivium_Chip/chip_top.sv` and `FOSSi_Tutorial/Trivium_Chip/chip_top.yaml`files accordingly to instantiate sufficiently many IO cells for the larger output bus. There is plenty of space in the IO rind and on the chip. However, depending of your choice of output bits per cycle you may need to increase the clock period. Rerun the design and look at the result.
+If the previous tasks have been easy for you, you may now go ahead and increase the "output_bits" parameter in the `FOSSi_Tutorial/Trivium_Chip/src/Trivium_Chip.vhd` and adapt the `FOSSi_Tutorial/Trivium_Chip/chip_top.sv` and `FOSSi_Tutorial/Trivium_Chip/chip_top.yaml`files accordingly to instantiate sufficiently many IO cells for the larger output bus. There is plenty of space in the IO ring and on the chip. However, depending of your choice of output bits per cycle you may need to increase the clock period. Rerun the design and look at the result.
